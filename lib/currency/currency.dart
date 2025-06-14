@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:decimal/decimal.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'dart:async';
 import '../data/themedata.dart' as globals;
 import '../secrets/secrets.dart' as secrets;
 import 'currlist.dart' as currencies;
@@ -43,9 +45,19 @@ class _CurrencyPageState extends State<CurrencyPage> {
         globals.showErrorMessage(
             'Failed to retrieve data (${response.statusCode})', context);
       }
-    } catch (err) {
-      if (mounted) globals.showErrorMessage(err.toString(), context);
-    } finally {
+    } on SocketException {
+    if (mounted) {
+      globals.showErrorMessage('No internet connection!', context);
+    }
+  } on TimeoutException {
+    if (mounted) {
+      globals.showErrorMessage('Request timed out. Please try again.', context);
+    }
+  } catch (err) {
+    if (mounted) {
+      globals.showErrorMessage('An unexpected error occurred: $err', context);
+    }
+  } finally {
       if (mounted) Navigator.pop(context);
     }
   }

@@ -56,10 +56,20 @@ class HistoryPage extends StatelessWidget {
                         globals.ans = doc['calc'].split(' = ')[1];
                         Navigator.of(context).pop();
                       },
-                      child: ListTile(
-                        title: Text(doc['calc'],
-                            style: const TextStyle(fontSize: 20)),
-                        textColor: globals.textColor,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: globals.textColor, width: 1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: ListTile(
+                          title: Text(doc['calc'],
+                              style: const TextStyle(fontSize: 20)),
+                          textColor: globals.textColor,
+                          trailing: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: globals.textColor,
+                          ),
+                        ),
                       ),
                     ),
                   );
